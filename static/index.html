@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AdaptLearn - Intelligente Lernplattform</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <h1 class="logo">AdaptLearn</h1>
+            <div class="nav-right">
+                <button id="themeToggle" class="theme-toggle" title="Dark/Light Mode">
+                    <span class="theme-icon">🌙</span>
+                </button>
+                <div id="userInfo" class="user-info" style="display: none;">
+                    <span id="currentUser">User</span>
+                    <button id="logoutBtn" class="btn btn-secondary">Logout</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- LOGIN / REGISTER SCREEN -->
+        <section id="authScreen" class="screen active">
+            <div class="auth-container">
+                <h2>Willkommen zu AdaptLearn</h2>
+                <p class="subtitle">Intelligentes, adaptives Lernsystem für deine Prüfungsvorbereitung</p>
+
+                <!-- Login Tab -->
+                <div class="auth-tabs">
+                    <button class="tab-btn active" data-tab="login">Login</button>
+                    <button class="tab-btn" data-tab="register">Registrieren</button>
+                </div>
+
+                <!-- Login Form -->
+                <form id="loginForm" class="auth-form active">
+                    <div class="form-group">
+                        <label for="loginUsername">Benutzername</label>
+                        <input type="text" id="loginUsername" placeholder="z.B. anna" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Passwort</label>
+                        <input type="password" id="loginPassword" placeholder="••••••" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Login</button>
+                    <div id="loginError" class="error-message"></div>
+                </form>
+
+                <!-- Register Form -->
+                <form id="registerForm" class="auth-form">
+                    <div class="form-group">
+                        <label for="registerUsername">Benutzername</label>
+                        <input type="text" id="registerUsername" placeholder="Neuer Username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerEmail">Email</label>
+                        <input type="email" id="registerEmail" placeholder="deine@email.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerPassword">Passwort</label>
+                        <input type="password" id="registerPassword" placeholder="••••••" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Registrieren</button>
+                    <div id="registerError" class="error-message"></div>
+                </form>
+
+                <div class="auth-hint">
+                    <p><strong>Demo-User:</strong> username: anna, password: 123456</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- QUIZ SCREEN -->
+        <section id="quizScreen" class="screen">
+            <div class="quiz-container">
+                <div class="quiz-header">
+                    <h2>Quiz - Adaptive Fragen</h2>
+                    <div class="quiz-stats">
+                        <span id="questionsAnswered">0</span> / <span id="questionsCorrect">0</span> ✓
+                    </div>
+                </div>
+
+                <div class="question-card">
+                    <div class="difficulty-badge" id="difficultyBadge">Schwierigkeit: -</div>
+                    
+                    <h3 id="questionText">Lade Frage...</h3>
+                    
+                    <div class="answer-form">
+                        <input 
+                            type="text" 
+                            id="answerInput" 
+                            placeholder="Deine Antwort eingeben..."
+                            required
+                        >
+                        <button id="submitAnswerBtn" class="btn btn-primary">Antwort absenden</button>
+                    </div>
+
+                    <div id="resultMessage" class="result-message" style="display: none;"></div>
+                </div>
+
+                <div class="quiz-navigation">
+                    <button id="toRankingBtn" class="btn btn-secondary">Zum Ranking</button>
+                    <button id="toDashboardBtn" class="btn btn-secondary">Mein Dashboard</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- RANKING SCREEN -->
+        <section id="rankingScreen" class="screen">
+            <div class="ranking-container">
+                <h2>🏆 Ranking</h2>
+                <p class="subtitle">Die besten Lerner</p>
+
+                <table class="ranking-table">
+                    <thead>
+                        <tr>
+                            <th>Rang</th>
+                            <th>Benutzername</th>
+                            <th>Erfolgsquote</th>
+                            <th>Versuche</th>
+                            <th>Richtig</th>
+                        </tr>
+                    </thead>
+                    <tbody id="rankingBody">
+                        <tr>
+                            <td colspan="5" class="loading">Lade Ranking...</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="ranking-navigation">
+                    <button id="backToQuizBtn" class="btn btn-primary">Zurück zum Quiz</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- DASHBOARD SCREEN -->
+        <section id="dashboardScreen" class="screen">
+            <div class="dashboard-container">
+                <h2>Mein Dashboard</h2>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3>Erfolgsquote</h3>
+                        <p class="stat-value" id="successRate">-</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Beantwortet</h3>
+                        <p class="stat-value" id="totalAttempted">-</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Richtig</h3>
+                        <p class="stat-value" id="totalCorrect">-</p>
+                    </div>
+                </div>
+
+                <div class="algorithm-info">
+                    <h3>📊 Adaptive Learning Algorithm</h3>
+                    <p>Der Algorithmus wählt Fragen basierend auf:</p>
+                    <ul>
+                        <li>✓ Häufigkeit falscher Antworten</li>
+                        <li>✓ Tage seit letzter Abfrage</li>
+                        <li>✓ Deine Erfolgsquote</li>
+                    </ul>
+                    <button id="viewAlgorithmBtn" class="btn btn-secondary">Algorithmus-Debug anschauen</button>
+                </div>
+
+                <div class="dashboard-navigation">
+                    <button id="backToQuizFromDashBtn" class="btn btn-primary">Zurück zum Quiz</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal für Algorithm Debug -->
+    <div id="algorithmModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Algorithmus-Debug: Priority Scores</h2>
+            <div id="algorithmDebugContent" class="algorithm-debug">
+                Lade Daten...
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
